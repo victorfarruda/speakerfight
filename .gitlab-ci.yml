@@ -1,19 +1,14 @@
+image: "python:3.6"
+
+before_script:
+  - pip install -r requirements.txt
+  - pip install pycrypto
+
 stages:
-  - test
-  - deploy
+  - Static Analysis
 
-test:
-  stage: test
+flake8:
+  stage: Static Analysis
   script:
-  # this configures Django application to use attached postgres database that is run on `postgres` host
-  - pip install -r requirements.txt
-  - pip install pycrypto
-  - coverage run manage.py test
+  - flake8 --max-line-length=120
 
-production:
-  stage: deploy
-  script:
-  - pip install -r requirements.txt
-  - pip install pycrypto
-  only:
-  - tags
