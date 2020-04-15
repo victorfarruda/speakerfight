@@ -1,10 +1,19 @@
-dependencies:
-  override:
-    - pip install -r requirements.txt
-    - pip install pycrypto
+stages:
+  - test
+  - deploy
+
 test:
-  override:
-    - coverage run manage.py test
-general:
-  artifacts:
-    - 'coverage'
+  stage: test
+  script:
+  # this configures Django application to use attached postgres database that is run on `postgres` host
+  - pip install -r requirements.txt
+  - pip install pycrypto
+  - coverage run manage.py test
+
+production:
+  stage: deploy
+  script:
+  - pip install -r requirements.txt
+  - pip install pycrypto
+  only:
+  - tags
